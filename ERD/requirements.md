@@ -33,3 +33,72 @@
 - **→** : "References" (foreign key direction)
 - **One-to-Many (1:N)**: Single parent, multiple children (e.g., one host → many properties)
 - **One-to-One (1:1)**: Strict 1:1 correspondence (e.g., booking:payment)
+
+
+erDiagram
+    USER {
+        string user_id PK
+        string first_name
+        string last_name
+        string email "UNIQUE, NOT NULL"
+        string password_hash "NOT NULL"
+        string phone_number
+        enum role "NOT NULL (guest/host/admin)"
+        timestamp created_at
+    }
+
+    PROPERTY {
+        string property_id PK
+        string host_id FK
+        string name "NOT NULL"
+        text description "NOT NULL"
+        string location "NOT NULL"
+        decimal pricepernight "NOT NULL"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    BOOKING {
+        string booking_id PK
+        string property_id FK
+        string user_id FK
+        date start_date "NOT NULL"
+        date end_date "NOT NULL"
+        decimal total_price "NOT NULL"
+        enum status "NOT NULL (pending/confirmed/canceled)"
+        timestamp created_at
+    }
+
+    PAYMENT {
+        string payment_id PK
+        string booking_id FK
+        decimal amount "NOT NULL"
+        timestamp payment_date
+        enum payment_method "NOT NULL (credit_card/paypal/stripe)"
+    }
+
+    REVIEW {
+        string review_id PK
+        string property_id FK
+        string user_id FK
+        integer rating "NOT NULL, CHECK (1-5)"
+        text comment "NOT NULL"
+        timestamp created_at
+    }
+
+    MESSAGE {
+        string message_id PK
+        string sender_id FK
+        string recipient_id FK
+        text message_body "NOT NULL"
+        timestamp sent_at
+    }
+
+    USER ||--o{ PROPERTY : "hosts (1:N)"
+    USER ||--o{ BOOKING : "makes (1:N)"
+    PROPERTY ||--o{ BOOKING : "has (1:N)"
+    BOOKING ||--|| PAYMENT : "has (1:1)"
+    PROPERTY ||--o{ REVIEW : "receives (1:N)"
+    USER ||--o{ REVIEW : "writes (1:N)"
+    USER ||--o{ MESSAGE : "sends (1:N)"
+    USER ||--o{ MESSAGE : "receives (1:N)"
