@@ -14,3 +14,22 @@
 - **FK→X**: Foreign Key references X entity
 - **ENUM**: Predefined list of values
 - **NOT NULL**: Field is required
+
+
+# AirBnB Database Relationships
+
+| Relationship                          | Type          | Description                                                                 | Foreign Key Mapping                     |
+|---------------------------------------|---------------|-----------------------------------------------------------------------------|-----------------------------------------|
+| **User → Property**                   | One-to-Many   | A user (host) can list multiple properties                                  | `Property.host_id` → `User.user_id`     |
+| **User → Booking**                    | One-to-Many   | A user (guest) can make multiple bookings                                   | `Booking.user_id` → `User.user_id`      |
+| **Property → Booking**                | One-to-Many   | A property can have multiple bookings                                       | `Booking.property_id` → `Property.property_id` |
+| **Booking → Payment**                 | One-to-One    | Each booking has exactly one payment record                                 | `Payment.booking_id` → `Booking.booking_id` |
+| **Property → Review**                 | One-to-Many   | A property can receive multiple reviews                                    | `Review.property_id` → `Property.property_id` |
+| **User → Review**                     | One-to-Many   | A user can write multiple reviews                                          | `Review.user_id` → `User.user_id`       |
+| **User → Message (as Sender)**        | One-to-Many   | A user can send multiple messages                                          | `Message.sender_id` → `User.user_id`    |
+| **User → Message (as Recipient)**     | One-to-Many   | A user can receive multiple messages                                       | `Message.recipient_id` → `User.user_id` |
+
+### Relationship Symbols:
+- **→** : "References" (foreign key direction)
+- **One-to-Many (1:N)**: Single parent, multiple children (e.g., one host → many properties)
+- **One-to-One (1:1)**: Strict 1:1 correspondence (e.g., booking:payment)
