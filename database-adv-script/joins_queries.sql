@@ -46,7 +46,8 @@ FROM
 LEFT JOIN 
     Review r
 ON 
-    p.property_id = r.property_id;
+    p.property_id = r.property_id
+ORDER BY r.review_created_at
 
 
 -- query using a FULL OUTER JOIN to retrieve all users and all bookings, even
