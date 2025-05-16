@@ -98,3 +98,28 @@ This section identifies high-usage columns in the `User`, `Booking`, and `Proper
 ### ⚠️ Notes
 - Indexes improve read performance but can slow down writes. Only add indexes for columns used in performance-critical queries.
 - For `Property.location` or `Property.description`, if partial matching (`LIKE '%search%'`) is common, consider a full-text index (e.g., in PostgreSQL with `tsvector`).
+
+
+## 📈 Query Performance Analysis: Date Range Query Before and After Indexing
+
+This section summarizes the performance analysis of a date range query in the Airbnb Backend System, evaluating the impact of adding a composite index on `Booking.start_date` and `Booking.end_date`. The analysis was conducted using PostgreSQL's `EXPLAIN` and `EXPLAIN ANALYZE` commands to measure query execution plans and runtime performance before and after applying the index from `database_index.sql`.
+
+*Analysis conducted on: May 16, 2025, 10:41 AM WAT*
+
+### 📋 Query Analyzed
+The following query was analyzed, as it involves a range filter on `Booking.start_date` and `Booking.end_date`, common for availability checks:
+
+```sql
+SELECT 
+    b.booking_id,
+    b.property_id,
+    b.user_id,
+    b.start_date,
+    b.end_date,
+    b.total_price,
+    b.status
+FROM 
+    Booking b
+WHERE 
+    b.start_date <= '2025-06-05'
+    AND b.end_date >= '2025-06-01';
