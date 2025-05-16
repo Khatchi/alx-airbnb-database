@@ -4,6 +4,7 @@
 
 -- Indexes for User Table
 -- Index on role for filtering by role (e.g., WHERE role = 'admin')
+-- yeah
 CREATE INDEX idx_user_role ON User (role);
 
 -- Index on created_at for sorting or filtering by date (e.g., ORDER BY created_at DESC)
